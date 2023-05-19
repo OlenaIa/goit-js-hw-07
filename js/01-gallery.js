@@ -32,6 +32,5 @@ function onClick(event) {
              instance.close();
         }
     });
-
 }
 
