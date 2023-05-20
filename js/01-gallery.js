@@ -13,24 +13,32 @@ galleryRef.addEventListener('click', onClick);
 
 function onClick(event) {
     event.preventDefault();
-    
-    if (!event.target.classList.contains('gallery__image')) {
-        return;
-    }
 
     const imgRef = event.target;
+    
+    if (imgRef.nodeName !== 'IMG') {
+        return;
+    }
+    
     const originalHrefRef = imgRef.dataset.source;
     // const originalHrefRef = imgRef.parentNode.href;
 
-    const instance = basicLightbox.create(`
-        <img src="${originalHrefRef}" width="800" height="600">
-    `)
+    const instance = basicLightbox.create(
+        `<img src="${originalHrefRef}" width="800" height="600">`,
+        {
+            onShow: () => { document.addEventListener('keydown', onKeyDownEscape) },
+            onClose: () => { document.removeEventListener('keydown', onKeyDownEscape) }
+        });
+    
     instance.show();
 
-    document.addEventListener('keydown', event => {
-        if (event.key === 'Escape') {
+    function onKeyDownEscape(event) {
+    if (event.key === 'Escape') {
              instance.close();
         }
-    });
+    };   
 }
+
+
+
 
